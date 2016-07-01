@@ -8,3 +8,7 @@ dist
 # Compiled tests
 elm.js
 test.html
+
+*.ipr
+*.iml
+*.iws
