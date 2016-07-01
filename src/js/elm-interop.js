@@ -1,8 +1,6 @@
 "use strict";
 
 var initialValues = {
-  ckeditor : '',
-  dropzoneUploadedFile : null,
   selectEvent: null
 };
 
@@ -191,80 +189,4 @@ function addMap() {
   }).addTo(mapEl);
 
   return mapEl;
-}
-
-
-
-// Dropzone
-// @todo: Move to own file.
-
-var ck = undefined;
-var dropZone = undefined;
-
-elmApp.ports.activePage.subscribe(function(model) {
-  if (model.activePage != 'Article') {
-    // Reset dropzone variable, in case we switch between pages.
-    ck = undefined;
-    dropZone = undefined;
-    return;
-  }
-
-  waitForElement('.dropzone', attachDropzone, model);
-});
-
-function attachDropzone(selector, model) {
-  if (model.activePage != 'Article') {
-    return false;
-  }
-
-  var element = document.querySelector(selector);
-  if (!element) {
-    // Element doesn't exist yet.
-    return false;
-  }
-
-  if (!!dropZone) {
-
-    // Check if we need to remove files.
-    if (model.postStatus == "Done") {
-      // Remove all files, even the ones being currently uploaded.
-      dropZone.removeAllFiles(true);
-
-      // Clear the CKeditor text area.
-      ck.setData('');
-    }
-
-    // Widgets were already attached once.
-    return true;
-  }
-
-
-  // Set the backend url with the access token.
-  var url = model.backendUrl + '/api/file-upload?access_token=' + model.accessToken;
-
-  dropZone = new Dropzone(selector, { url: url});
-
-  dropZone.on('complete', function(file) {
-    if (!file.accepted) {
-      // File was not uploaded.
-      return;
-    }
-
-    if (file.xhr.status !== 200) {
-      return;
-    }
-
-    var data = JSON.parse(file.xhr.response);
-
-    // Get the file ID, and send it to Elm.
-    var id = parseInt(data.data[0]['id']);
-    elmApp.ports.dropzoneUploadedFile.send(id);
-  });
-
-  ck = CKEDITOR.replace('body');
-
-  // Send the data to Elm.
-  ck.on('change', function() {
-    elmApp.ports.ckeditor.send(ck.getData());
-  });
 }

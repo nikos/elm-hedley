@@ -95,6 +95,3 @@ port activePage =
   in
     Signal.map getPortData app.model
 
-port dropzoneUploadedFile : Signal (Maybe Int)
-
-port ckeditor : Signal String

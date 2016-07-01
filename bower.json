@@ -1,7 +1,7 @@
 {
   "name": "elm-hedley",
   "version": "0.1.0",
-  "homepage": "https://github.com/amitaibu/elm-login",
+  "homepage": "https://github.com/amitaibu/elm-hedley",
   "authors": [
     "Amitai Burstein <amitai@gizra.com>"
   ],
@@ -14,7 +14,6 @@
     "tests"
   ],
   "dependencies": {
-    "dropzone": "~4.2.0",
     "leaflet": "~0.7.5"
   }
 }
