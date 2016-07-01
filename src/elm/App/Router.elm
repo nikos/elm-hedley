@@ -10,8 +10,6 @@ type alias Model = App.Model
 delta2update : Model -> Model -> Maybe HashUpdate
 delta2update previous current =
   case current.activePage of
-    App.Article ->
-      Just <| RouteHash.set ["articles"]
 
     App.Event companyId ->
       -- First, we ask the submodule for a HashUpdate. Then, we use
@@ -30,10 +28,6 @@ delta2update previous current =
         then Nothing
         else Just <| RouteHash.set ["login"]
 
-
-    App.PageNotFound ->
-      Nothing
-
     App.User ->
       Just <| RouteHash.set ["my-account"]
 
@@ -45,9 +39,6 @@ location2action list =
     ["auth", "github"] ->
       ( App.Update.SetActivePage App.GithubAuth ) :: []
 
-    "articles" :: rest ->
-      ( App.Update.SetActivePage App.Article ) :: []
-
     "login" :: rest ->
       ( App.Update.SetActivePage App.Login ) :: []
 
@@ -57,9 +48,8 @@ location2action list =
     "events" :: rest ->
       ( App.Update.SetActivePage <| App.Event (Event.location2company rest) ) :: []
 
-
     "" :: rest ->
       ( App.Update.SetActivePage <| App.Event Nothing ) :: []
 
     _ ->
-      ( App.Update.SetActivePage App.PageNotFound ) :: []
+      ( App.Update.SetActivePage <| App.Event Nothing ) :: []

@@ -12,7 +12,6 @@ import Task exposing (succeed)
 
 -- Pages import
 
-import Pages.Article.Update exposing (Action)
 import Pages.Event.Update exposing (Action)
 import Pages.GithubAuth.Update exposing (Action)
 import Pages.Login.Update exposing (Action)
@@ -35,8 +34,7 @@ init =
   )
 
 type Action
-  = ChildArticleAction Pages.Article.Update.Action
-  | ChildConfigAction Config.Update.Action
+  = ChildConfigAction Config.Update.Action
   | ChildEventAction Pages.Event.Update.Action
   | ChildGithubAuthAction Pages.GithubAuth.Update.Action
   | ChildLoginAction Pages.Login.Update.Action
@@ -56,20 +54,6 @@ type Action
 update : Action -> Model -> (Model, Effects Action)
 update action model =
   case action of
-    ChildArticleAction act ->
-      let
-        -- Pass the access token along to the child components.
-        context =
-          { accessToken = model.accessToken
-          , backendConfig = (.config >> .backendConfig) model
-          }
-
-        (childModel, childEffects) = Pages.Article.Update.update context act model.article
-      in
-        ( {model | article = childModel }
-        , Effects.map ChildArticleAction childEffects
-        )
-
     ChildConfigAction act ->
       let
         (childModel, childEffects) = Config.Update.update act model.config
@@ -285,12 +269,6 @@ update action model =
                 App.Login ->
                   (App.Login, model.nextPage)
 
-                -- When the page is not found, we should keep the URL as is,
-                -- and even after the user info was fetched, we should keep it
-                -- so we set the next Page also to the error page.
-                App.PageNotFound ->
-                  (page, Just page)
-
                 _ ->
                   (App.Login, Just page)
 
@@ -307,9 +285,6 @@ update action model =
 
         newPageEffects =
           case page' of
-            App.Article ->
-              Task.succeed (ChildArticleAction Pages.Article.Update.Activate) |> Effects.task
-
             App.Event companyId ->
               Task.succeed (ChildEventAction <| Pages.Event.Update.Activate companyId) |> Effects.task
 

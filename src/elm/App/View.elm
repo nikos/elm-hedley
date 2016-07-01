@@ -10,11 +10,9 @@ import Html.Events exposing (onClick)
 
 -- Pages import
 
-import Pages.Article.View exposing (view)
 import Pages.Event.View exposing (view)
 import Pages.GithubAuth.View exposing (view)
 import Pages.Login.View exposing (view)
-import Pages.PageNotFound.View exposing (view)
 import Pages.User.Model exposing (User)
 import Pages.User.View exposing (view)
 
@@ -45,13 +43,6 @@ view address model =
 mainContent : Signal.Address Action -> Model -> Html
 mainContent address model =
   case model.activePage of
-    App.Article ->
-      let
-        childAddress =
-          Signal.forwardTo address App.Update.ChildArticleAction
-      in
-        div [ style myStyle ] [ Pages.Article.View.view childAddress model.article ]
-
     App.Event companyId ->
       let
         childAddress =
@@ -79,10 +70,6 @@ mainContent address model =
 
       in
         div [ style myStyle ] [ Pages.Login.View.view context childAddress model.login ]
-
-    App.PageNotFound ->
-      div [] [ Pages.PageNotFound.View.view ]
-
 
     App.User ->
       let
@@ -171,16 +158,6 @@ navbarLoggedIn address model =
                       [ classList (activeClass (App.Event Nothing)) ]
                       [ i [ class "fa fa-map-marker" ] []
                       , a [ hrefVoid, onClick address (App.Update.SetActivePage <| App.Event Nothing) ] [ text "Events" ]
-                      ]
-                  , li
-                      [ classList (activeClass App.Article) ]
-                      [ i [ class "fa fa-file-o" ] []
-                      , a [ hrefVoid, onClick address (App.Update.SetActivePage App.Article) ] [ text "Articles"]
-                      ]
-                  , li
-                      [  classList (activeClass App.PageNotFound) ]
-                      [ i [ class "fa fa-exclamation-circle" ] []
-                      , a [ href "#!/error-page" ] [ text "PageNotFound (404)" ]
                       ]
                   , li
                       []

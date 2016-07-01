@@ -5,7 +5,6 @@ import Company.Model as Company exposing (Model)
 
 -- Pages import
 
-import Pages.Article.Model as Article exposing (initialModel, Model)
 import Pages.Event.Model as Event exposing (initialModel, Model)
 import Pages.GithubAuth.Model as GithubAuth exposing (Model)
 import Pages.Login.Model as Login exposing (initialModel, Model)
@@ -15,17 +14,14 @@ type alias AccessToken = String
 type alias CompanyId = Int
 
 type Page
-  = Article
-  | Event (Maybe CompanyId)
+  = Event (Maybe CompanyId)
   | GithubAuth
   | Login
-  | PageNotFound
   | User
 
 type alias Model =
   { accessToken : AccessToken
   , activePage : Page
-  , article : Article.Model
   , config : Config.Model
   , configError : Bool
   , companies : List Company.Model
@@ -41,7 +37,6 @@ initialModel : Model
 initialModel =
   { accessToken = ""
   , activePage = Login
-  , article = Article.initialModel
   , config = Config.initialModel
   , configError = False
   , companies = []
