@@ -16,5 +16,5 @@ view address model =
 myStyle : List (String, String)
 myStyle =
     [ ("width", "600px")
-    , ("height", "400px")
+    , ("height", "720px")
     ]
