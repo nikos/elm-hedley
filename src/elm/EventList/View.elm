@@ -79,4 +79,4 @@ viewListEvents events address model =
       then
         div [] [ text "No results found" ]
       else
-        ul [ class "authors" ] (List.map getListItem filteredEvents)
+        ul [ class "events" ] (List.map getListItem filteredEvents)
