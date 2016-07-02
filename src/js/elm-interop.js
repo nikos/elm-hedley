@@ -176,6 +176,19 @@ function selectMarker(markerEl, id) {
   });
 }
 
+function onLocationFound(e) {
+  var radius = e.accuracy / 2;
+
+  L.marker(e.latlng).addTo(mapEl)
+    .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+  L.circle(e.latlng, radius).addTo(mapEl);
+}
+
+function onLocationError(e) {
+  alert(e.message);
+}
+
 /**
  * Initialize a Leaflet map.
  */
@@ -184,9 +197,13 @@ function addMap() {
   var mapEl = L.map('map');
 
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
-    maxZoom: 10,
+    maxZoom: 18,
     id: 'mapbox.streets'
   }).addTo(mapEl);
+
+  mapEl.on('locationfound', onLocationFound);
+  mapEl.on('locationerror', onLocationError);
+  mapEl.locate({setView: true, maxZoom: 16});
 
   return mapEl;
 }
