@@ -69,22 +69,12 @@
       }
     }
   }
+}
 
-  .map-container {
-    padding-bottom: 26px;
-
-    .map-wrapper {
-      position: relative;
-      padding-top: 6px;
-      height: 720px;
-
-      #map {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        padding: 0px;
-        margin: 0px;
-      }
-    }
-  }
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  width: 100%;
 }

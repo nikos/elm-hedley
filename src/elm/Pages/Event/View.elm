@@ -35,29 +35,15 @@ view context address model =
 
   in
     div
-      [ id "events-page"
-      , class "container"
-      ]
-      [ div [class "row"]
-        [ div [class "col-md-3 first"]
-            [ (EventCompanyFilter.View.view context.companies childEventCompanyFilterAddress model.eventCompanyFilter)
-            , (EventAuthorFilter.View.view model.events childEventAuthorFilterAddress model.eventAuthorFilter)
-            , (EventList.View.view filteredEvents childEventListAddress model.eventList)
+      [ id "just-dummy-container" ]
+      [ div [ id "map" ] [],
+        div [ id "events-page", class "container"]
+          [ div [class "row"]
+            [ div [class "col-md-3 first"]
+                [ (EventCompanyFilter.View.view context.companies childEventCompanyFilterAddress model.eventCompanyFilter)
+                , (EventAuthorFilter.View.view model.events childEventAuthorFilterAddress model.eventAuthorFilter)
+                , (EventList.View.view filteredEvents childEventListAddress model.eventList)
+                ]
             ]
-
-        , div
-            [ class "col-md-9 last"]
-            [ div
-              [ class "map-container wrapper -suffix" ]
-              [ h3
-                  [ class "title" ]
-                  [ i [ class "fa fa-globe" ] []
-                  , text <| " " ++ "Map"
-                  ]
-              , div
-                  [ class "map-wrapper" ]
-                  [ div [ id "map"] [] ]
-              ]
-            ]
-        ]
+          ]
       ]
